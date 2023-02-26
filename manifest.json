@@ -1,0 +1,17 @@
+{
+  "name": "Linkedin AutoConnect",
+  "description": "Chrome extension that's able to send connection requests to a list of people in a LinkedIn search.",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "permissions": ["tabs", "activeTab", "scripting", "storage"],
+  "host_permissions": ["https://*.linkedin.com/*"],
+  "action": {
+    "default_popup": "/popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["/popup/popup.js"]
+    }
+  ]
+}
