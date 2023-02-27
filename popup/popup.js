@@ -1,8 +1,8 @@
-const connectBtn = document.querySelector(".connectBtn"),
-  showResult = document.querySelector(".result"),
-  connected = document.querySelector(".connected>b"),
-  skipped = document.querySelector(".skipped>b"),
-  content = document.querySelector(".content");
+const content = document.querySelector(".content"),
+  connected = content.querySelector(".connected>b"),
+  skipped = content.querySelector(".skipped>b"),
+  showResult = content.querySelector(".result"),
+  connectBtn = content.querySelector(".connectBtn");
 
 let intervalId;
 let idx = 0,
@@ -69,6 +69,7 @@ connectBtn.addEventListener("click", async () => {
       showResult.style.color = isConnected ? "#16e453" : "#ffaa9f";
 
       showResult.innerHTML = res;
+
       !done && idx++;
     });
   }, 2000);
