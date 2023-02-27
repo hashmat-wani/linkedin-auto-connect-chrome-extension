@@ -2,14 +2,14 @@
 
 LinkedIn AutoConnect is a Chrome extension that automates the process of sending connection requests to a list of people in a LinkedIn search. This can save a lot of time for users who want to expand their network quickly and easily.
 
-## <ins>Features</ins>
+## Features
 
 - Automatically sends connection requests on LinkedIn by clicking on **Start Connecting** button.
 - Automatically handles the popup window for each request
 - Stops automatically after sending requests on the current page.
 - Users can stop and start again the request-sending process. The extension will resume where it left off.
 
-## <ins>Installation</ins>
+## Installation
 
 To install the extension, follow these steps:
 
@@ -27,7 +27,7 @@ To install the extension, follow these steps:
 - Enable Developer mode by clicking the toggle switch in the upper-right corner.
 - Click the "Load unpacked" button and select the unzipped folder.
 
-## <ins>Usage</ins>
+## Usage
 
 - Navigate to the LinkedIn search page where you would like to send connection requests.
   ```
@@ -38,7 +38,7 @@ To install the extension, follow these steps:
 - The extension will automatically send connection requests to all the users listed on the search page.
 - Once the requests have been sent, the extension will display a summary of the number of requests sent and the number of requests it skipped.
 
-## <ins>Privacy</ins>
+## Privacy
 
 This extension requires the following permissions:
 
