@@ -15,5 +15,6 @@
       "matches": ["https://*.linkedin.com/*"],
       "js": ["content.js"]
     }
-  ]
+  ],
+  "icons": { "48": "logo.png" }
 }

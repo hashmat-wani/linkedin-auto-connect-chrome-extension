@@ -1,7 +1,8 @@
 const connectBtn = document.querySelector(".connectBtn"),
   showResult = document.querySelector(".result"),
   connected = document.querySelector(".connected>b"),
-  skipped = document.querySelector(".skipped>b");
+  skipped = document.querySelector(".skipped>b"),
+  content = document.querySelector(".content");
 
 let intervalId;
 let idx = 0,
@@ -11,6 +12,17 @@ let idx = 0,
 connectBtn.addEventListener("click", async () => {
   console.log("popup console");
 
+  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  // checking if tab url is linkedin or not
+  if (!tab.url.includes("linkedin.com")) {
+    content.innerHTML =
+      "INFO: The extension you are trying to access is not available for this website. Please note that it is only available for LinkedIn.com.";
+
+    return;
+  }
+
+  // toggling button b/w start and stop
   const btnText = connectBtn.innerText;
   if (btnText === "STOP CONNECTING") {
     intervalId && clearInterval(intervalId);
@@ -24,9 +36,10 @@ connectBtn.addEventListener("click", async () => {
   connectBtn.style.backgroundColor = "#ffaa9f";
   showResult.innerText = "Connecting...";
 
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   intervalId = setInterval(() => {
+    // sending idx no to content.js and receiving result
     chrome.tabs.sendMessage(tab.id, { idx }, ({ res, done }) => {
+      // if no button is found to connect
       if (done && res === "notFound") {
         showResult.innerText = "Oops! No account found";
         connectBtn.innerText = "Try again!";
@@ -34,13 +47,17 @@ connectBtn.addEventListener("click", async () => {
         return clearInterval(intervalId);
       }
 
+      // if connecting is completed
       if (done) {
+        idx = 0;
         connectBtn.innerText = "Completed";
         connectBtn.disabled = true;
         connectBtn.style.cursor = "not-allowed";
         connectBtn.style.backgroundColor = "#8edba5";
         clearInterval(intervalId);
       }
+
+      // checking if skipped or connected
       const isConnected = res.includes("Connected");
 
       if (isConnected) {
@@ -52,7 +69,7 @@ connectBtn.addEventListener("click", async () => {
       showResult.style.color = isConnected ? "#16e453" : "#ffaa9f";
 
       showResult.innerHTML = res;
-      idx++;
+      !done && idx++;
     });
   }, 2000);
 });

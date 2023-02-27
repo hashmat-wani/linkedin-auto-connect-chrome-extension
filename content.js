@@ -1,14 +1,20 @@
 console.log("chrome extension running");
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+  // getting search result elements here
   const elements = document.querySelectorAll(".entity-result__item");
 
+  // if No elements found
   if (!elements.length) {
     return sendResponse({ res: "notFound", done: true });
   }
 
+  // extracting index from request message to send connection request
   const { idx } = request;
+
   let done = false;
+
+  // if this is the last element to connect
   if (idx >= elements.length - 1) {
     done = true;
   }
@@ -28,6 +34,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     ".artdeco-button__text"
   ).innerText;
 
+  // skipping buttons otherthan CONNECT
   if (connectBtnText === "Connect") {
     connectBtn.click();
 
