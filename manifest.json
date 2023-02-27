@@ -3,7 +3,7 @@
   "description": "Chrome extension that's able to send connection requests to a list of people in a LinkedIn search.",
   "version": "1.0.0",
   "manifest_version": 3,
-  "permissions": ["tabs", "scripting", "storage"],
+  "permissions": ["tabs", "scripting"],
   "host_permissions": ["https://*.linkedin.com/*"],
   "action": {
     "default_title": "Connect people",

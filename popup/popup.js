@@ -72,5 +72,5 @@ connectBtn.addEventListener("click", async () => {
 
       !done && idx++;
     });
-  }, 2000);
+  }, 3000);
 });
