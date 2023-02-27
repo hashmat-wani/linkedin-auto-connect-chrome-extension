@@ -1,73 +1,58 @@
-const connect = document.querySelector(".connect"),
-  inivitationsSent = document.querySelector("#inivitations-sent p");
+const connectBtn = document.querySelector(".connectBtn"),
+  showResult = document.querySelector(".result"),
+  connected = document.querySelector(".connected>b"),
+  skipped = document.querySelector(".skipped>b");
 
-connect.addEventListener("click", async () => {
-  // console.log("extension popup window");
-  let action;
-  const btnText = connect.innerText;
-  if (btnText === "START CONNECTING") {
-    action = "start";
-    connect.innerText = "Stop Connecting";
-    connect.style.backgroundColor = "#ffaa9f";
-  } else {
-    action = "stop";
-    connect.innerText = "Start Connecting";
-    connect.style.backgroundColor = "#16e453";
+let intervalId;
+let idx = 0,
+  connectedCount = 0,
+  skippedCount = 0;
+
+connectBtn.addEventListener("click", async () => {
+  console.log("popup console");
+
+  const btnText = connectBtn.innerText;
+  if (btnText === "STOP CONNECTING") {
+    intervalId && clearInterval(intervalId);
+    connectBtn.innerText = "Start Connecting";
+    connectBtn.style.backgroundColor = "#16e453";
+    showResult.innerText = "Click below to Resume";
+    return;
   }
 
-  // chrome.storage.sync.get("count", ({ count }) => {
-  //   console.log("count", count);
-  // });
+  connectBtn.innerText = "Stop Connecting";
+  connectBtn.style.backgroundColor = "#ffaa9f";
+  showResult.innerText = "Connecting...";
 
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: startConnecting,
-    args: [action],
-  });
-});
-
-function startConnecting(action) {
-  // console.log("Tab window");
-
-  const elements = document.querySelectorAll(".entity-result__item");
-  for (let i = 0; i < elements.length; i++) {
-    setTimeout(() => {
-      // getting the name of person
-      const personName = elements[i].querySelector(
-        ".entity-result__title-line.entity-result__title-line--2-lines>span>a>span>span"
-      ).innerText;
-
-      // connect button refrence
-      const connectBtn = elements[i].querySelector(
-        ".entity-result__actions.entity-result__divider .artdeco-button.artdeco-button--2.artdeco-button--secondary.ember-view"
-      );
-
-      // text of the connect btn to check if its CONNECT or not
-      const connectBtnText = connectBtn.querySelector(
-        ".artdeco-button__text"
-      ).innerText;
-
-      if (connectBtnText === "Connect") {
-        console.log(`Connected ${personName}`);
-        connectBtn.click();
-
-        // handling dialog box to send the connection request
-        setTimeout(() => {
-          const sendBtn = document.querySelector(
-            ".artdeco-button.artdeco-button--2.artdeco-button--primary.ember-view.ml1"
-          );
-          if (sendBtn) sendBtn.click();
-        }, 0);
-      } else {
-        console.log(`Skipped ${personName}`);
+  intervalId = setInterval(() => {
+    chrome.tabs.sendMessage(tab.id, { idx }, ({ res, done }) => {
+      if (done && res === "notFound") {
+        showResult.innerText = "Oops! No account found";
+        connectBtn.innerText = "Try again!";
+        connectBtn.style.backgroundColor = "#16e453";
+        return clearInterval(intervalId);
       }
-    }, (i + 1) * 2000);
-  }
-}
 
-function stopConnecting() {
-  console.log("inside stop", intervalId);
-  if (intervalId) clearInterval(intervalId);
-  console.log("stopped");
-}
+      if (done) {
+        connectBtn.innerText = "Completed";
+        connectBtn.disabled = true;
+        connectBtn.style.cursor = "not-allowed";
+        connectBtn.style.backgroundColor = "#8edba5";
+        clearInterval(intervalId);
+      }
+      const isConnected = res.includes("Connected");
+
+      if (isConnected) {
+        connected.innerText = ++connectedCount;
+      } else {
+        skipped.innerText = ++skippedCount;
+      }
+
+      showResult.style.color = isConnected ? "#16e453" : "#ffaa9f";
+
+      showResult.innerHTML = res;
+      idx++;
+    });
+  }, 2000);
+});

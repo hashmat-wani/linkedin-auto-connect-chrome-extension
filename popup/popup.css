@@ -6,12 +6,12 @@
 body {
   color: #fff;
   background: #353535;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .wrapper {
   width: 200px;
-  height: 180px;
+  height: 200px;
   text-align: center;
 }
 
@@ -30,23 +30,38 @@ body {
   align-items: center;
 }
 
-#inivitations-sent {
-  font-size: 20px;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  border: 7px solid #fff;
+.count {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
 }
 
-.connect {
+.connectBtn {
   text-transform: uppercase;
   font-weight: bold;
   padding: 8px 12px;
   border-radius: 4px;
   outline: none;
   border: none;
+  cursor: pointer;
+}
+
+/* .connectBtn:disabled {
+  background: #8edba5;
+} */
+
+.greenBg {
   background: #16e453;
-  /* color: #ffaa9f; */
+}
+
+.greenColor {
+  color: #16e453;
+}
+
+.redBg {
+  background: #ffaa9f;
+}
+
+.redColor {
+  color: #ffaa9f;
 }
