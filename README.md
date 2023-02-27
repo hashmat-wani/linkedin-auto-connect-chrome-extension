@@ -22,7 +22,7 @@ To install the extension, follow these steps:
 - Unzip the cloned file.
 - Open Chrome and navigate to
   ```
-  chrome://extensions.
+  chrome://extensions
   ```
 - Enable Developer mode by clicking the toggle switch in the upper-right corner.
 - Click the "Load unpacked" button and select the unzipped folder.
